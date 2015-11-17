@@ -50,12 +50,20 @@ module GMO
         post_request name, options
       end
 
-
       # 【コンビニ払い】
       #  2.1.2.1. 取引登録
       #  これ以降の決済取引で必要となる取引IDと取引パスワードの発行を行い、取引を開始します。
       def entry_tran_cvs(options = {})
         name = "EntryTranCvs.idPass"
+        required = [:order_id, :amount]
+        assert_required_options(required, options)
+        post_request name, options
+      end
+
+      #== 取引登録 (Pay-easy 払い)
+      # Pay-easy 払い用の取引登録です。
+      def entry_tran_pay_easy(options = {})
+        name = "EntryTranPayEasy.idPass"
         required = [:order_id, :amount]
         assert_required_options(required, options)
         post_request name, options
@@ -136,6 +144,15 @@ module GMO
       def exec_tran_cvs(options = {})
         name = "ExecTranCvs.idPass"
         required = [:access_id, :access_pass, :order_id, :convenience, :customer_name, :tel_no, :receipts_disp_11, :receipts_disp_12, :receipts_disp_13]
+        assert_required_options(required, options)
+        post_request name, options
+      end
+
+      #== 決済実行 (Pay-easy 払い)
+      # Pay-easy 払い用の決済実行です。
+      def exec_tran_pay_easy(options = {})
+        name = "ExecTranPayEasy.idPass"
+        required = [:access_id, :access_pass, :order_id, :customer_name, :customer_kana, :tel_no, :receipts_disp_11, :receipts_disp_12, :receipts_disp_13]
         assert_required_options(required, options)
         post_request name, options
       end
